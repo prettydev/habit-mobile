@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Habio</string>
+    <string name="facebook_app_id">3722126297897713</string>
+    <string name="fb_login_protocol_scheme">fb3722126297897713</string>
+</resources>

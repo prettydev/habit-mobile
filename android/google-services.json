@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "306481469472",
+    "firebase_url": "https://habio-83680-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "habio-83680",
+    "storage_bucket": "habio-83680.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:306481469472:android:36ce46724b08a7fbcac445",
+        "android_client_info": {
+          "package_name": "com.habio.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "306481469472-seqnnkqm8n3hiduab7e43efpg9cinocf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.habio.android",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "306481469472-htg47hjnmkce17rgvdihsjl48cd5mvfh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvQ1-OZ6odYi_RTmrhK33HPTJQk5T7Mdk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "306481469472-htg47hjnmkce17rgvdihsjl48cd5mvfh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
