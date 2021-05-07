@@ -9,7 +9,6 @@ import {appContext} from '../../../../store';
 export const AuthProfile = () => {
     const {
         state: {user},
-        dispatch,
     } = useContext(appContext);
 
     const theme = useTheme();

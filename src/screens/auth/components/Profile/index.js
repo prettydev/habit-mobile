@@ -7,7 +7,6 @@ import {appContext} from '../../../../store';
 export const Profile = ({visible}) => {
     const {
         state: {user},
-        dispatch,
     } = useContext(appContext);
 
     const [authWay, setAuthWay] = useState('login');
@@ -23,7 +22,7 @@ export const Profile = ({visible}) => {
         return null;
     }
 
-    if (user.isEmpty) {
+    if (!user?.email) {
         return (
             <>
                 <Login visible={authWay === 'login'} register={register} />

@@ -6,12 +6,12 @@ import {showMessage} from 'react-native-flash-message';
 import {useTheme} from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
-import api from '../../api';
+import api, {login} from '../../api';
 import {appContext} from '../../store';
-import {userLogin} from '../../actions';
+import {userLogin, userLoginSuccess} from '../../actions';
 
 export const LoginForm = () => {
-    const {state, dispatch} = useContext(appContext);
+    const {dispatch} = useContext(appContext);
 
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -54,19 +54,18 @@ export const LoginForm = () => {
                 AsyncStorage.removeItem('rememberMe');
             }
 
-            const data = await api.login({
+            dispatch(userLogin());
+            const login_res = await login({
                 email,
                 password,
             });
-            const {code, message} = data;
-            alert(message);
+            const {code, message, data} = login_res;
             if (code === 'success') {
-                setSentEmail(true);
+                dispatch(userLoginSuccess(data));
             } else if (code === 'error') {
-                goBack();
+                alert(message);
+                dispatch(userLoginError());
             }
-
-            dispatch(userLogin());
         } else {
             showMessage({
                 icon: 'auto',

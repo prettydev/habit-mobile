@@ -21,6 +21,15 @@ export const userLogin = _ => ({
     type: USER_LOGIN,
 });
 
+export const userLoginSuccess = payload => ({
+    type: USER_LOGIN_SUCCESS,
+    payload: payload,
+});
+
+export const userLoginError = _ => ({
+    type: USER_LOGIN_ERROR,
+});
+
 export const userRegister = payload => ({
     type: USER_REGISTER,
     payload: payload,

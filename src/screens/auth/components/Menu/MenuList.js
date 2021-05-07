@@ -70,7 +70,7 @@ export const MenuList = ({visible, onSupportTapped}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {!user.isEmpty && (
+            {user.email && (
                 <>
                     <Divider />
                     <TouchableOpacity

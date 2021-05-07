@@ -4,7 +4,7 @@ import {useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Button} from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import api from '../../api';
+import {register} from '../../api';
 
 export const SendLinkScreen = ({navigation, route}) => {
     const email = route.params?.email;
@@ -23,7 +23,7 @@ export const SendLinkScreen = ({navigation, route}) => {
     };
 
     const sendLink = async () => {
-        const data = await api.register({
+        const data = await register({
             email,
             password,
         });

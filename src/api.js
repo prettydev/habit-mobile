@@ -32,7 +32,7 @@ export const register = async request => {
 };
 
 export const login = async request => {
-    const {data} = await axios.post(baseApiUrl + 'users/login', request);
+    const {data} = await axios.post(baseApiUrl + 'users/authenticate', request);
     return data;
 };
 

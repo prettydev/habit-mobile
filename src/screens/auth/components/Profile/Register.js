@@ -11,10 +11,7 @@ import {appContext} from '../../../../store';
 import {userLoginWithFacebook, userLoginWithGoogle} from '../../../../actions';
 
 export const Register = ({login, visible}) => {
-    const {
-        state: {user},
-        dispatch,
-    } = useContext(appContext);
+    const {dispatch} = useContext(appContext);
 
     const theme = useTheme();
     const styles = useStyles(theme);

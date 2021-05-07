@@ -7,7 +7,6 @@ import {Input} from '../../elements';
 export const AboutMeModal = ({visible, onClose}) => {
     const {
         state: {user},
-        dispatch,
     } = useContext(appContext);
     const theme = useTheme();
     const styles = useStyles(theme);

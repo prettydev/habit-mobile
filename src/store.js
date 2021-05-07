@@ -2,10 +2,6 @@ import React, {createContext, useReducer} from 'react';
 import {USER_LOGIN, USER_LOGIN_ERROR, USER_LOGIN_SUCCESS, USER_LOGOUT, USER_UPDATE_PROFILE} from './actions';
 import {navigationRef} from './navigator';
 
-/////////////////////////////////////////////////////////
-
-/////////////////////////////////////////////////////////
-
 const INITIAL_STATE = {
     loading: false,
     isLoggedIn: false,

@@ -12,7 +12,6 @@ import {appContext} from '../../store';
 export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
     const {
         state: {user},
-        dispatch,
     } = useContext(appContext);
 
     const theme = useTheme();
