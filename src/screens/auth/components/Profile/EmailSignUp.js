@@ -6,27 +6,35 @@ import {mailFormat} from '../../../../commons';
 import {Button, Input, Paper} from '../../../../components';
 import {Overlay} from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import {useNavigation} from "@react-navigation/native";
+import {useNavigation} from '@react-navigation/native';
 
-export const Email = () => {
+export const EmailSignUp = () => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const navigation = useNavigation();
+
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [password2, setPassword2] = useState('');
+
     const [agreeGetEmail, setAgreeGetEmail] = useState(false);
     const [visible, setVisible] = useState(false);
 
     const next = () => {
-        if (email && mailFormat.test(email)) {
-            setVisible(true);
-        } else {
+        if (!email || !mailFormat.test(email)) {
             alert('Please enter a valid email');
+        } else if (password.length < 6) {
+            alert('Password must be at least 6 length!');
+        } else if (password !== password2) {
+            alert('Passwords dont match!');
+        } else {
+            setVisible(true);
         }
     };
 
     const sendLink = () => {
         setVisible(false);
-        navigation.navigate('SendLink', {email});
+        navigation.navigate('SendLink', {email, password});
     };
 
     const goBack = () => {
@@ -59,6 +67,22 @@ export const Email = () => {
                 onChangeText={(name, value) => setEmail(value)}
                 placeholder={'Email'}
                 style={styles.inputStyle}
+            />
+            <Input
+                value={password}
+                name="password"
+                onChangeText={(name, value) => setPassword(value)}
+                placeholder="Password"
+                style={styles.inputStyle}
+                secureTextEntry={true}
+            />
+            <Input
+                value={password2}
+                name="password2"
+                onChangeText={(name, value) => setPassword2(value)}
+                placeholder="Confirm Password"
+                style={styles.inputStyle}
+                secureTextEntry={true}
             />
             <Button title={'CONTINUE'} onPress={next} />
             <View style={{flexDirection: 'row', alignItems: 'center', marginTop: theme.hp('3%')}}>

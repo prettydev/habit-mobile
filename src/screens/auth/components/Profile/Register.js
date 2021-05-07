@@ -1,19 +1,23 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {Paper} from '../../../../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import CheckBox from '@react-native-community/checkbox';
-import {Email} from './Email';
+import {EmailSignUp} from './EmailSignUp';
 import {useStyles} from './styles';
-import {useDispatch} from 'react-redux';
-import {userLoginWithFacebook, userLoginWithGoogle} from '../../../../store/actions';
+import {appContext} from '../../../../store';
+import {userLoginWithFacebook, userLoginWithGoogle} from '../../../../actions';
 
 export const Register = ({login, visible}) => {
+    const {
+        state: {user},
+        dispatch,
+    } = useContext(appContext);
+
     const theme = useTheme();
     const styles = useStyles(theme);
-    const dispatch = useDispatch();
     const [agreeGetEmail, setAgreeGetEmail] = useState(false);
     const [signupWay, setSignupWay] = useState('init');
 
@@ -96,7 +100,7 @@ export const Register = ({login, visible}) => {
                     </View>
                 </View>
             ) : (
-                <Email />
+                <EmailSignUp />
             )}
             <Text style={[styles.loginBottom, {marginTop: theme.hp('0%')}]}>
                 Already have an account?

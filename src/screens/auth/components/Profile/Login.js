@@ -5,22 +5,15 @@ import {LoginForm, Paper} from '../../../../components';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useStyles} from './styles';
-import {useDispatch} from 'react-redux';
-import {userLoginWithGoogle, userLoginWithFacebook} from "../../../../store/actions";
 
 export const Login = ({visible, register}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
-    const dispatch = useDispatch();
     const [openLogInForm, setOpenLogInForm] = useState(false);
 
-    const loginWithGoogle = () => {
-        dispatch(userLoginWithGoogle());
-    };
+    const loginWithGoogle = () => {};
 
-    const loginWithFacebook = () => {
-        dispatch(userLoginWithFacebook());
-    };
+    const loginWithFacebook = () => {};
 
     const loginWithEmail = () => {
         setOpenLogInForm(true);

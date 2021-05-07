@@ -1,33 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Alert, TouchableOpacity, ActionSheetIOS, Linking, Text, StyleSheet} from 'react-native';
 import {useTheme} from 'react-native-paper';
 import {imgAvatar, requestCameraPermission, requestMediaLibraryPermission} from '../../commons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {useFirebase, useFirestore} from 'react-redux-firebase';
-import {useSelector} from 'react-redux';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {ProgressImage} from './ProgressImage';
 import {Overlay} from 'react-native-elements';
+import {appContext} from '../../store';
 
 export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
+    const {
+        state: {user},
+        dispatch,
+    } = useContext(appContext);
+
     const theme = useTheme();
     const styles = useStyles(theme);
-    const firebase = useFirebase();
-    const firestore = useFirestore();
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const authUser = useSelector(state => state.firebase.profile);
-    const [source, setSource] = useState(authUser.photoURL ? {uri: authUser.photoURL} : imgAvatar);
+    const [source, setSource] = useState(user.photoURL ? {uri: user.photoURL} : imgAvatar);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        if (authUser.photoURL) {
-            setSource({uri: authUser.photoURL});
+        if (user.photoURL) {
+            setSource({uri: user.photoURL});
         } else {
             setSource(imgAvatar);
         }
-    }, [authUser.photoURL]);
+    }, [user.photoURL]);
 
     const launchActionSheet = () => {
         if (theme.isIos) {
@@ -108,36 +109,36 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
         setLoading(true);
         const response = await fetch(uri);
         const blob = await response.blob();
-        const fileName = authUser.uid + '.' + uri.split('.').pop();
-        const ref = firebase.storage().ref(`avatars/${fileName}`);
-        ref.put(blob).on(
-            'state_changed',
-            snapshot => {
-                let progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
-                setProgress(progress);
-            },
-            error => {
-                console.log('error', error);
-            },
-            () => {
-                firebase
-                    .storage()
-                    .ref('avatars/')
-                    .child(fileName)
-                    .getDownloadURL()
-                    .then(async url => {
-                        setSource({uri: url});
-                        firestore
-                            .collection('users')
-                            .doc(authUser.uid)
-                            .update({avatar: url})
-                            .then(() => {
-                                setLoading(false);
-                                setProgress(0);
-                            });
-                    });
-            },
-        );
+        const fileName = user.uid + '.' + uri.split('.').pop();
+        // const ref = firebase.storage().ref(`avatars/${fileName}`);
+        // ref.put(blob).on(
+        //     'state_changed',
+        //     snapshot => {
+        //         let progress = Math.floor((snapshot.bytesTransferred / snapshot.totalBytes) * 100);
+        //         setProgress(progress);
+        //     },
+        //     error => {
+        //         console.log('error', error);
+        //     },
+        //     () => {
+        // firebase
+        //     .storage()
+        //     .ref('avatars/')
+        //     .child(fileName)
+        //     .getDownloadURL()
+        //     .then(async url => {
+        //         setSource({uri: url});
+        //         firestore
+        //             .collection('users')
+        //             .doc(user.uid)
+        //             .update({avatar: url})
+        //             .then(() => {
+        //                 setLoading(false);
+        //                 setProgress(0);
+        //             });
+        //     });
+        // },
+        // );
     };
 
     const toggleOverlay = () => {

@@ -4,9 +4,11 @@ import {useTheme} from 'react-native-paper';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Button} from '../../components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import api from '../../api';
 
 export const SendLinkScreen = ({navigation, route}) => {
     const email = route.params?.email;
+    const password = route.params?.password;
 
     const theme = useTheme();
     const styles = useStyles(theme);
@@ -20,8 +22,18 @@ export const SendLinkScreen = ({navigation, route}) => {
         navigation.navigate('Home');
     };
 
-    const sendLink = () => {
-        setSentEmail(true);
+    const sendLink = async () => {
+        const data = await api.register({
+            email,
+            password,
+        });
+        const {code, message} = data;
+        alert(message);
+        if (code === 'success') {
+            setSentEmail(true);
+        } else if (code === 'error') {
+            goBack();
+        }
     };
 
     return (

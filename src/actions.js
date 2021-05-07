@@ -17,9 +17,8 @@ export const USER_LOGIN_WITH_GOOGLE = 'USER_LOG_IN_WITH_GOOGLE';
 export const USER_LOGIN_WITH_APPLE = 'USER_LOGIN_WITH_APPLE';
 export const USER_LOGIN_WITH_FACEBOOK = 'USER_LOGIN_WITH_FACEBOOK';
 
-export const userLogin = payload => ({
+export const userLogin = _ => ({
     type: USER_LOGIN,
-    payload: payload,
 });
 
 export const userRegister = payload => ({
@@ -32,9 +31,7 @@ export const updateProfile = profile => ({
     payload: profile,
 });
 
-export const userLogOut = () => async (dispatch, getState, {getFirebase}) => {
-    const firebase = getFirebase();
-    await firebase.auth().signOut();
+export const userLogOut = () => async (dispatch, getState) => {
     getState().nav.reset({index: 0, routes: [{name: 'Home'}]});
 };
 

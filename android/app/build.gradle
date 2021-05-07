@@ -192,15 +192,7 @@ dependencies {
 
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 
-    implementation platform('com.google.firebase:firebase-bom:26.8.0')
     implementation "com.google.android.gms:play-services-base:17.6.0"
-    implementation "com.google.firebase:firebase-core:18.0.2"
-
-    implementation 'com.google.firebase:firebase-analytics'
-
-    implementation 'com.google.firebase:firebase-auth'
-    implementation 'com.google.firebase:firebase-firestore'
-
     implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
 
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {

@@ -1,41 +1,37 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, StyleSheet, Text, Keyboard} from 'react-native';
 import {Input, Button, ForgotPasswordButton, RegisterAsMemberButton} from '../elements';
-import {useDispatch} from 'react-redux';
-import {USER_LOGIN} from '../../store/actions';
+
 import {showMessage} from 'react-native-flash-message';
 import {useTheme} from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
+import api from '../../api';
+import {appContext} from '../../store';
+import {userLogin} from '../../actions';
 
 export const LoginForm = () => {
+    const {state, dispatch} = useContext(appContext);
+
     const theme = useTheme();
     const styles = useStyles(theme);
     const [rememberMe, toggleRememberMe] = useState(false);
-    const dispatch = useDispatch();
-    const [state, setState] = useState({
-        email: '',
-        password: '',
-    });
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
     useEffect(() => {
         (async () => {
-            const email = await AsyncStorage.getItem('username');
-            const password = await AsyncStorage.getItem('password');
+            const _email = await AsyncStorage.getItem('email');
+            const _password = await AsyncStorage.getItem('password');
             const _rememberMe = await AsyncStorage.getItem('rememberMe');
-            if (email && password && _rememberMe) {
-                setState({
-                    email: email,
-                    password: password,
-                });
+            if (_email && _password && _rememberMe) {
+                setEmail(_email);
+                setPassword(_password);
                 toggleRememberMe(true);
             }
         })();
     }, []);
-
-    const _login = (name, value) => {
-        // setState({...state, [name]: value});
-    };
 
     const _forgotPassword = () => {
         // navigation.navigate('ForgotPassword');
@@ -46,21 +42,31 @@ export const LoginForm = () => {
     };
 
     const _signIn = async () => {
-        if (state.username && state.password) {
+        if (email && password) {
             Keyboard.dismiss();
             if (rememberMe) {
-                AsyncStorage.setItem('email', state.email);
-                AsyncStorage.setItem('password', state.password);
+                AsyncStorage.setItem('email', email);
+                AsyncStorage.setItem('password', password);
                 AsyncStorage.setItem('rememberMe', 'remember');
             } else {
-                AsyncStorage.removeItem('username');
+                AsyncStorage.removeItem('email');
                 AsyncStorage.removeItem('password');
                 AsyncStorage.removeItem('rememberMe');
             }
-            await dispatch({
-                type: USER_LOGIN,
-                payload: state,
+
+            const data = await api.login({
+                email,
+                password,
             });
+            const {code, message} = data;
+            alert(message);
+            if (code === 'success') {
+                setSentEmail(true);
+            } else if (code === 'error') {
+                goBack();
+            }
+
+            dispatch(userLogin());
         } else {
             showMessage({
                 icon: 'auto',
@@ -77,17 +83,17 @@ export const LoginForm = () => {
                 <Text style={styles.titleStyle}>Login with your Email</Text>
                 <Input
                     name="email"
-                    style={{marginTop: theme.hp('2%'), textAlign: 'center'}}
-                    value={state.username}
-                    onChangeText={_login}
+                    style={styles.inputStyle}
+                    value={email}
+                    onChangeText={(name, value) => setEmail(value)}
                     placeholder="Email"
                 />
                 <Input
                     placeholder="Password"
                     name="password"
-                    value={state.password}
-                    style={{marginTop: theme.hp('2%'), textAlign: 'center'}}
-                    onChangeText={_login}
+                    value={password}
+                    style={styles.inputStyle}
+                    onChangeText={(name, value) => setPassword(value)}
                     secureTextEntry={true}
                 />
                 <View style={{flexDirection: 'row', alignItems: 'center', marginTop: theme.hp('2%')}}>
@@ -156,5 +162,9 @@ const useStyles = theme =>
         },
         viewDealsAndOffersButton: {
             marginBottom: theme.hp('10%'),
+        },
+        inputStyle: {
+            textAlign: 'center',
+            marginVertical: theme.hp('2%'),
         },
     });

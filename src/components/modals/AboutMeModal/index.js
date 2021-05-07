@@ -1,26 +1,26 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, StyleSheet, Text, Modal, TouchableOpacity} from 'react-native';
 import {useTheme} from 'react-native-paper';
+import {appContext} from '../../../store';
 import {Input} from '../../elements';
-import {useSelector} from 'react-redux';
-import {useFirestore} from 'react-redux-firebase';
 
 export const AboutMeModal = ({visible, onClose}) => {
+    const {
+        state: {user},
+        dispatch,
+    } = useContext(appContext);
     const theme = useTheme();
     const styles = useStyles(theme);
-    const authUser = useSelector(state => state.firebase.profile);
-
-    const firestore = useFirestore();
-    const [aboutMe, setAboutMe] = useState(authUser.aboutMe || '');
+    const [aboutMe, setAboutMe] = useState(user.aboutMe || '');
 
     const updateAboutMe = () => {
-        firestore
-            .collection('users')
-            .doc(authUser.uid)
-            .update({aboutMe})
-            .then(() => {
-                onClose();
-            });
+        // firestore
+        //     .collection('users')
+        //     .doc(user.uid)
+        //     .update({aboutMe})
+        //     .then(() => {
+        //         onClose();
+        //     });
     };
 
     if (!visible) {

@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Register} from './Register';
 import {Login} from './Login';
-import {useSelector} from 'react-redux';
 import {AuthProfile} from './AuthProfile';
+import {appContext} from '../../../../store';
 
 export const Profile = ({visible}) => {
+    const {
+        state: {user},
+        dispatch,
+    } = useContext(appContext);
+
     const [authWay, setAuthWay] = useState('login');
-    const authUser = useSelector(state => state.firebase.profile);
     const register = () => {
         setAuthWay('register');
     };
@@ -19,7 +23,7 @@ export const Profile = ({visible}) => {
         return null;
     }
 
-    if (authUser.isEmpty) {
+    if (user.isEmpty) {
         return (
             <>
                 <Login visible={authWay === 'login'} register={register} />

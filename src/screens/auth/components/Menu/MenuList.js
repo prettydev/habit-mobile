@@ -1,22 +1,24 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import {Divider, useTheme} from 'react-native-paper';
 import {imgDark, imgLight} from '../../../../commons';
 import {PremiumModal} from '../../../../components';
 import {useStyles} from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import {userLogOut} from '../../../../store/actions';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {appContext} from '../../../../store';
+import {userLogOut} from '../../../../actions';
 
 export const MenuList = ({visible, onSupportTapped}) => {
+    const {
+        state: {user},
+        dispatch,
+    } = useContext(appContext);
+
     const theme = useTheme();
     const styles = useStyles(theme);
     const [premiumModal, setPremiumModal] = useState(false);
-    const authUser = useSelector(state => state.firebase.profile);
     const [isDark, setIsDark] = useState(false);
-
-    const dispatch = useDispatch();
 
     const logOut = () => {
         dispatch(userLogOut());
@@ -68,7 +70,7 @@ export const MenuList = ({visible, onSupportTapped}) => {
                     </TouchableOpacity>
                 </View>
             </View>
-            {!authUser.isEmpty && (
+            {!user.isEmpty && (
                 <>
                     <Divider />
                     <TouchableOpacity
