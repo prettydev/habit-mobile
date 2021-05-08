@@ -18,16 +18,16 @@ export const Avatar = ({size = 80, noEdit, avatar, style, disabled}) => {
     const styles = useStyles(theme);
     const [progress, setProgress] = useState(0);
     const [loading, setLoading] = useState(false);
-    const [source, setSource] = useState(user.photoURL ? {uri: user.photoURL} : imgAvatar);
+    const [source, setSource] = useState(user.avatar ? {uri: user.avatar} : imgAvatar);
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
-        if (user.photoURL) {
-            setSource({uri: user.photoURL});
+        if (user.avatar) {
+            setSource({uri: user.avatar});
         } else {
             setSource(imgAvatar);
         }
-    }, [user.photoURL]);
+    }, [user.avatar]);
 
     const launchActionSheet = () => {
         if (theme.isIos) {

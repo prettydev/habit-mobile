@@ -6,7 +6,7 @@ import {showMessage} from 'react-native-flash-message';
 import {useTheme} from 'react-native-paper';
 import AsyncStorage from '@react-native-community/async-storage';
 import CheckBox from '@react-native-community/checkbox';
-import api, {login} from '../../api';
+import {login} from '../../api';
 import {appContext} from '../../store';
 import {userLogin, userLoginSuccess} from '../../actions';
 

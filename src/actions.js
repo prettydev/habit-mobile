@@ -12,11 +12,6 @@ export const USER_UPDATE_PROFILE = 'USER_UPDATE_PROFILE';
 export const USER_UPDATE_PROFILE_SUCCESS = 'USER_UPDATE_PROFILE_SUCCESS';
 export const USER_UPDATE_PROFILE_FAILED = 'USER_UPDATE_PROFILE_FAILED';
 
-// Other Login methods
-export const USER_LOGIN_WITH_GOOGLE = 'USER_LOG_IN_WITH_GOOGLE';
-export const USER_LOGIN_WITH_APPLE = 'USER_LOGIN_WITH_APPLE';
-export const USER_LOGIN_WITH_FACEBOOK = 'USER_LOGIN_WITH_FACEBOOK';
-
 export const userLogin = _ => ({
     type: USER_LOGIN,
 });
@@ -43,19 +38,3 @@ export const updateProfile = profile => ({
 export const userLogOut = () => async (dispatch, getState) => {
     getState().nav.reset({index: 0, routes: [{name: 'Home'}]});
 };
-
-// Other Login methods
-export const userLoginWithGoogle = payload => ({
-    type: USER_LOGIN_WITH_GOOGLE,
-    payload: payload,
-});
-
-export const userLoginLoginWithApple = payload => ({
-    type: USER_LOGIN_WITH_APPLE,
-    payload: payload,
-});
-
-export const userLoginWithFacebook = payload => ({
-    type: USER_LOGIN_WITH_FACEBOOK,
-    payload: payload,
-});

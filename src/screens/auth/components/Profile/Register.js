@@ -8,23 +8,28 @@ import CheckBox from '@react-native-community/checkbox';
 import {EmailSignUp} from './EmailSignUp';
 import {useStyles} from './styles';
 import {appContext} from '../../../../store';
-import {userLoginWithFacebook, userLoginWithGoogle} from '../../../../actions';
+import {google_login} from '../../../../api';
 
 export const Register = ({login, visible}) => {
     const {dispatch} = useContext(appContext);
 
     const theme = useTheme();
     const styles = useStyles(theme);
+    const [email, setEmail] = useState('');
     const [agreeGetEmail, setAgreeGetEmail] = useState(false);
     const [signupWay, setSignupWay] = useState('init');
 
-    const signUpWithGoogle = () => {
-        dispatch(userLoginWithGoogle());
+    const signUpWithGoogle = async _ => {
+        const {code, message, data} = await google_login();
+        if (code === 'success') {
+            setEmail(data.user.email);
+            setSignupWay('email');
+        } else if (code === 'error') {
+            alert(message);
+        }
     };
 
-    const signUpWithFacebook = () => {
-        dispatch(userLoginWithFacebook());
-    };
+    const signUpWithFacebook = () => {};
 
     const signUpWithEmail = () => {
         setSignupWay('email');
@@ -51,14 +56,14 @@ export const Register = ({login, visible}) => {
                             SIGN UP WITH <Text style={styles.textStrong}>GOOGLE</Text>
                         </Text>
                     </Paper>
-                    <Paper style={styles.loginButton} onPress={signUpWithFacebook}>
+                    {/* <Paper style={styles.loginButton} onPress={signUpWithFacebook}>
                         <View style={styles.iconStyle}>
                             <AntDesign name={'facebook-square'} size={20} color={'black'} />
                         </View>
                         <Text style={styles.textStyle}>
                             SIGN UP WITH <Text style={styles.textStrong}>FACEBOOK</Text>
                         </Text>
-                    </Paper>
+                    </Paper> */}
                     <Paper style={styles.loginButton} onPress={signUpWithEmail}>
                         <View style={styles.iconStyle}>
                             <MaterialIcons name={'email'} size={20} color={'black'} />
@@ -97,7 +102,7 @@ export const Register = ({login, visible}) => {
                     </View>
                 </View>
             ) : (
-                <EmailSignUp />
+                <EmailSignUp init_email={email} />
             )}
             <Text style={[styles.loginBottom, {marginTop: theme.hp('0%')}]}>
                 Already have an account?

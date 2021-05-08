@@ -8,12 +8,12 @@ import {Overlay} from 'react-native-elements';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {useNavigation} from '@react-navigation/native';
 
-export const EmailSignUp = () => {
+export const EmailSignUp = ({init_email}) => {
     const theme = useTheme();
     const styles = useStyles(theme);
     const navigation = useNavigation();
 
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState(init_email);
     const [password, setPassword] = useState('');
     const [password2, setPassword2] = useState('');
 

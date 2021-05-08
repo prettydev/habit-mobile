@@ -22,7 +22,7 @@ export const Profile = ({visible}) => {
         return null;
     }
 
-    if (!user?.email) {
+    if (!user || (user && !user.email)) {
         return (
             <>
                 <Login visible={authWay === 'login'} register={register} />

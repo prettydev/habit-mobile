@@ -10,7 +10,7 @@ const INITIAL_STATE = {
         name: null,
         email: null,
         phoneNumber: null,
-        photoURL: null,
+        avatar: null,
         uid: null,
         createdAt: null,
         aboutMe: null,

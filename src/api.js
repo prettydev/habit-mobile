@@ -1,22 +1,7 @@
 import axios from 'axios';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
-import {Observable} from 'rxjs';
-
 import {Alert} from 'react-native';
-import {GoogleSignin, statusCodes} from '@react-native-community/google-signin';
+import {GoogleSignin, GoogleSigninButton, statusCodes} from '@react-native-google-signin/google-signin';
 import {LoginManager, AccessToken} from 'react-native-fbsdk';
-import {
-    USER_LOGIN,
-    USER_LOGIN_SUCCESS,
-    USER_LOGIN_WITH_APPLE,
-    USER_LOGIN_WITH_FACEBOOK,
-    USER_LOGIN_WITH_GOOGLE,
-    USER_REGISTER,
-    USER_UPDATE_PROFILE,
-} from './actions';
 
 GoogleSignin.configure({
     offlineAccess: false,
@@ -36,48 +21,46 @@ export const login = async request => {
     return data;
 };
 
-export const updateProfile = (action, state) => {
-    return action.ofType(USER_UPDATE_PROFILE).mergeMap(({payload}) => {
-        return new Observable(observer => {
-            // Profile Update
-        });
-    });
+export const google_login = async _ => {
+    try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        console.log(userInfo);
+        return {code: 'success', data: userInfo};
+    } catch (error) {
+        let message = '';
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+            message = 'user cancelled the login flow';
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+            message = 'operation (e.g. sign in) is in progress already';
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+            message = 'play services not available or outdated';
+        } else {
+            message = 'some other error happened';
+        }
+        console.log('google error:', message);
+        return {code: 'error', message};
+    }
 };
 
-export const loginWithGoogle = (action, state) => {
-    return action.ofType(USER_LOGIN_WITH_GOOGLE).mergeMap(({payload}) => {
-        return new Observable(async observer => {});
-    });
-};
-
-export const loginWithApple = (action, state) => {
-    return action.ofType(USER_LOGIN_WITH_APPLE).mergeMap(({payload}) => {
-        return new Observable(observer => {
-            // Login with apple
-        });
-    });
-};
+export const loginWithApple = (action, state) => {};
 
 export const loginWithFacebook = (action, state) => {
-    return action.ofType(USER_LOGIN_WITH_FACEBOOK).mergeMap(({payload}) => {
-        return new Observable(observer => {
-            LoginManager.logInWithPermissions(['public_profile', 'email']).then(
-                async function (result) {
-                    if (result.isCancelled) {
-                        console.log('Login cancelled');
-                        Alert.alert('Login cancelled');
-                    } else {
-                        const data = await AccessToken.getCurrentAccessToken();
-                        if (!data) {
-                            Alert.alert('Something went wrong obtaining access token');
-                        }
-                    }
-                },
-                function (error) {
-                    console.log('Login fail with error: ' + error);
-                    Alert.alert('Login fail with error');
-                },
-            );
-        });
-    });
+    LoginManager.logInWithPermissions(['public_profile', 'email']).then(
+        async function (result) {
+            if (result.isCancelled) {
+                console.log('Login cancelled');
+                Alert.alert('Login cancelled');
+            } else {
+                const data = await AccessToken.getCurrentAccessToken();
+                if (!data) {
+                    Alert.alert('Something went wrong obtaining access token');
+                }
+            }
+        },
+        function (error) {
+            console.log('Login fail with error: ' + error);
+            Alert.alert('Login fail with error');
+        },
+    );
 };
